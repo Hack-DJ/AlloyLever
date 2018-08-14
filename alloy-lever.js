@@ -111,19 +111,28 @@
   }
 
 
-  AlloyLever.entry = function(selector) {
-      var count = 0,
-          entry = document.querySelector(selector)
-      if(entry) {
-          entry.addEventListener('click', function () {
-              count++
-              if (count > 5) {
-                  count = -10000
-                  AlloyLever.vConsole(true)
-              }
-          })
-      }
-  }
+    AlloyLever.entry = function (selector) {
+        var count = 0,
+            clickTime = 0,
+            entry = document.querySelector(selector)
+        if (entry) {
+            entry.addEventListener('click', function () {
+                count++
+                if (clickTime == 0) {
+                    clickTime = Date.now();
+                }
+                if (count > 5) {
+                    if (Date.now() - clickTime < 5000) {
+                        count = -10000
+                        AlloyLever.vConsole(true)
+                    } else {
+                        count = 0;
+                        clickTime = 0;
+                    }
+                }
+            })
+        }
+    }
 
   window.onerror = function(msg, url, line, col, error) {
       var newMsg = msg
